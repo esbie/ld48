@@ -36,8 +36,8 @@ end
 
 function map.generateLayer(width, height, type)
   local tiles = {}
-  local totalRows = height/20
-  local totalCols = width/20
+  local totalRows = math.floor(height/20)
+  local totalCols = math.floor(width/20)
   local result = {}
 
   if type.paths > 0 then
@@ -52,9 +52,23 @@ function map.generateLayer(width, height, type)
     for row=1, totalRows do
       if math.random() < type.density and tiles[col][row] ~= empty then
         tiles[col][row] = true
-        result[#result+1] = love.physics.newRectangleShape(((col-1)*map.tileSize+map.tileSize/2), ((row-1)*map.tileSize), map.tileSize, map.tileSize, 0)
+        result[#result+1] = map.generateShape(col, row)
+        result[#result+1] = map.generateShape(col, row, totalCols*map.tileSize)
+        result[#result+1] = map.generateShape(col, row, -totalCols*map.tileSize)
       end
     end
   end
   return result
+end
+
+function map.generateShape(col, row, colOffset, rowOffset)
+  colOffset = colOffset or 0
+  rowOffset = rowOffset or 0
+  return love.physics.newRectangleShape(
+    (colOffset + (col-1)*map.tileSize+map.tileSize/2), 
+    (rowOffset + (row-1)*map.tileSize), 
+    map.tileSize, 
+    map.tileSize, 
+    0
+  )
 end
