@@ -21,8 +21,14 @@ function layers:new(w)
 
 
   newLayer.body = love.physics.newBody(world, 0, y) --remember, the shape (the rectangle we create next) anchors to the body from its center, so we have to move it to (650/2, 650-50/2)
-  newLayer.shape = love.physics.newRectangleShape(w/2, h/2, w, h, 0) --make a rectangle with a width of 650 and a height of 50
-  newLayer.fixture = love.physics.newFixture(newLayer.body, newLayer.shape) --attach shape to body
+  newLayer.shapes = { 
+    love.physics.newRectangleShape(w/4, h/2, w/2, h, 0),
+    love.physics.newRectangleShape(w*3/4+tileSize, h/2, w/2-tileSize, h, 0)
+  }
+  newLayer.fixtures = { 
+    love.physics.newFixture(newLayer.body, newLayer.shapes[1]),
+    love.physics.newFixture(newLayer.body, newLayer.shapes[2])
+  }
   layers[#layers+1] = newLayer
   return newLayer
 end
@@ -36,10 +42,12 @@ end
 
 function layers:selectLayer(x,y)
   for i, layer in ipairs(layers) do
-    if layer.fixture:testPoint(x, y) then
-      print("layer selected: " .. i)
-      layers.selectedLayer = layer
-      return layer
+    for j, fixture in ipairs(layer.fixtures) do
+      if fixture:testPoint(x, y) then
+        print("layer selected: " .. i)
+        layers.selectedLayer = layer
+        return layer
+      end
     end
   end
 
@@ -58,8 +66,10 @@ function layers:draw()
 end
 
 function layers:drawLayer(layer)
-  love.graphics.setColor(layer.r, layer.g, layer.b)
-  fillPhysicsRectangle(layer)
-  love.graphics.setColor(10, 10, 10)
-  linePhysicsRectangle(layer)
+  for i, shape in ipairs(layer.shapes) do
+    love.graphics.setColor(layer.r, layer.g, layer.b)
+    love.graphics.polygon("fill", layer.body:getWorldPoints(shape:getPoints()))
+    love.graphics.setColor(10, 10, 10)
+    love.graphics.polygon("line", layer.body:getWorldPoints(shape:getPoints()))
+  end
 end
