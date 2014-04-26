@@ -1,8 +1,7 @@
 layers = {}
 
 function layers:new(w)
-  local tileSize = 20
-  local h = math.random(2,8)*tileSize
+  local h = math.random(2,8)*map.tileSize
   local y = 300 -- default starting layer y position
 
   if #layers ~= 0 then
