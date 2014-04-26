@@ -12,6 +12,12 @@ layers.types = {
     density = 0.8,
     paths = 1,
     rooms = 1
+  },
+  wormTown = {
+    thickness = "large",
+    density = 0.8,
+    paths = 10,
+    rooms = 0
   }
 }
 
@@ -19,7 +25,9 @@ function layers:new(w, type)
   type = type or layers.types.default
   local h = map.tileSize
   if type.thickness == "medium" then
-    h = math.random(2,8)*map.tileSize  
+    h = math.random(4,6)*map.tileSize  
+  elseif type.thickness == "large" then
+    h = math.random(10,12)*map.tileSize  
   else
     h = type.thickness*map.tileSize
   end

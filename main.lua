@@ -13,7 +13,7 @@ function love.load()
   world = love.physics.newWorld(0, gravity*pixelPerMeter, true)
   ground = layers:new(levelWidth)
   otherGround = layers:new(levelWidth, layers.types.thinAndImpassible)
-  lastGround = layers:new(levelWidth)
+  lastGround = layers:new(levelWidth, layers.types.wormTown)
 
   player.load(levelWidth)
 
