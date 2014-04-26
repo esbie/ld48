@@ -22,21 +22,21 @@ end
 function layers:new(w)
   local tileSize = 20
   local h = math.random(1,8)*tileSize
+  local y = 300 -- default starting layer y position
+
+  if #layers ~= 0 then
+    local lastLayer = layers[#layers]
+    y = lastLayer.body:getY() + lastLayer.h
+  end
 
   local newLayer = {
+    y = y,
     h = h,
     w = w
   }
   newLayer.r = math.random(130,150)
   newLayer.g = math.random(60,80)
   newLayer.b = math.random(10,25)
-
-  local y = 300 -- default starting layer y position
-
-  if #layers ~= 0 then
-    local lastLayer = layers[#layers]
-    y = lastLayer.body:getY() + lastLayer.h -- + h/2 + lastLayer.h/2
-  end
 
 
   newLayer.body = love.physics.newBody(world, 0, y)
@@ -58,6 +58,11 @@ function layers:moveSelectedLayer(oldX)
   if sl == nil then return end
   dX = love.mouse.getX() - oldX
   sl.body:setX(sl.body:getX() + dX)
+
+  if layers:containsBody(sl, player.body) then
+    player.body:setLinearVelocity(0,0)
+    player.body:setX(player.body:getX() + dX)
+  end
 end
 
 function layers:selectLayer(x,y)
@@ -93,3 +98,10 @@ function layers:drawLayer(layer)
     love.graphics.polygon("line", layer.body:getWorldPoints(shape:getPoints()))
   end
 end
+
+function layers:containsBody(layer, body)
+  local y = body:getY()
+  return layer ~= nil and y < (layer.y + layer.h) and y > layer.y
+end
+
+
