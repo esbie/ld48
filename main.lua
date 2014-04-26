@@ -9,6 +9,7 @@ function love.load()
   love.physics.setMeter(pixelPerMeter)
   world = love.physics.newWorld(0, gravity*pixelPerMeter, true)
   ground = layers:new(levelWidth/2, levelWidth-100, levelWidth, 100)
+  otherGround = layers:new(levelWidth/2, levelWidth-200, levelWidth, 100)
 
   player.load(levelWidth)
 
@@ -48,9 +49,7 @@ function love.mousereleased(x, y, button)
 end
 
 function love.draw()
-  love.graphics.setColor(142, 69, 19) -- set the drawing color to green for the ground
-  fillPhysicsRectangle(ground)
-
+  layers:draw()
   player.draw()
 end
 
