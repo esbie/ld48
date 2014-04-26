@@ -8,8 +8,8 @@ function love.load()
 
   love.physics.setMeter(pixelPerMeter)
   world = love.physics.newWorld(0, gravity*pixelPerMeter, true)
-  ground = layers:new(levelWidth/2, levelWidth-100, levelWidth, 100)
-  otherGround = layers:new(levelWidth/2, levelWidth-200, levelWidth, 100)
+  ground = layers:new(levelWidth-100, levelWidth, 100)
+  otherGround = layers:new(levelWidth-200, levelWidth, 100)
 
   player.load(levelWidth)
 
