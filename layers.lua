@@ -1,8 +1,27 @@
 layers = {}
 
+function layers:mapMaker(width, height)
+  local tiles = {}
+  local tileSize = 20
+  local totalRows = height/20
+  local totalCols = width/20
+  local result = {}
+
+  for col=1, totalCols do
+    tiles[col] = {}
+    for row=1, totalRows do
+      if math.random() < 0.6 then
+        tiles[col][row] = true
+        result[#result+1] = love.physics.newRectangleShape(((col-1)*tileSize+tileSize/2), ((row-1)*tileSize), tileSize, tileSize, 0)
+      end
+    end
+  end
+  return result
+end
+
 function layers:new(w)
-  local tileSize = 50
-  local h = math.random(1,5)*tileSize
+  local tileSize = 20
+  local h = math.random(1,8)*tileSize
 
   local newLayer = {
     h = h,
@@ -20,15 +39,16 @@ function layers:new(w)
   end
 
 
-  newLayer.body = love.physics.newBody(world, 0, y) --remember, the shape (the rectangle we create next) anchors to the body from its center, so we have to move it to (650/2, 650-50/2)
-  newLayer.shapes = { 
-    love.physics.newRectangleShape(w/4, h/2, w/2, h, 0),
-    love.physics.newRectangleShape(w*3/4+tileSize, h/2, w/2-tileSize, h, 0)
-  }
-  newLayer.fixtures = { 
-    love.physics.newFixture(newLayer.body, newLayer.shapes[1]),
-    love.physics.newFixture(newLayer.body, newLayer.shapes[2])
-  }
+  newLayer.body = love.physics.newBody(world, 0, y)
+  newLayer.shapes = layers:mapMaker(w, h)
+  local fixtures = {}
+
+  for i, shape in pairs(newLayer.shapes) do
+    fixtures[#fixtures+1] = love.physics.newFixture(newLayer.body, shape)
+  end
+
+  newLayer.fixtures = fixtures
+
   layers[#layers+1] = newLayer
   return newLayer
 end

@@ -5,18 +5,18 @@ player = {
 }
 
 function player.load(levelWidth)
-  player.body = love.physics.newBody(world, levelWidth/4, levelWidth/2, "dynamic")
+  player.body = love.physics.newBody(world, levelWidth*3/4, levelWidth/2, "dynamic")
   player.shape = love.physics.newRectangleShape(player.h, player.w)
   player.fixture = love.physics.newFixture(player.body, player.shape, 1)
-  player.fixture:setRestitution(0.1) --bounce
+  player.fixture:setRestitution(0.1)
 end
 
 function player.update(dt)
   x, y = player.body:getLinearVelocity()
 
-  if love.keyboard.isDown("right") then --press the right arrow key to push the ball to the right
+  if love.keyboard.isDown("right") then
     player.body:setLinearVelocity(player.velocity, y)
-  elseif love.keyboard.isDown("left") then --press the left arrow key to push the ball to the left
+  elseif love.keyboard.isDown("left") then
     player.body:setLinearVelocity(-player.velocity, y)
   end
 end
@@ -30,15 +30,15 @@ end
 
 function player.keyreleased(key)
   x, y = player.body:getLinearVelocity()
-  if key == "right" then --press the right arrow key to push the ball to the right
+  if key == "right" then
     player.body:setLinearVelocity(x/2, y)
-  elseif key == "left" then --press the left arrow key to push the ball to the left
+  elseif key == "left" then
     player.body:setLinearVelocity(x/2, y)
   end
 end
 
 function player.draw()
-  love.graphics.setColor(47, 47, 14) --set the drawing color to red for the ball
+  love.graphics.setColor(47, 47, 14)
   fillPhysicsRectangle(player)
 end
 
