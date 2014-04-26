@@ -1,7 +1,29 @@
 layers = {}
 
-function layers:new(w)
-  local h = math.random(2,8)*map.tileSize
+layers.types = {
+  thinAndImpassible = {
+    thickness = 1,
+    density = 1.0,
+    paths = 1,
+    rooms = 0
+  },
+  default = {
+    thickness = "medium",
+    density = 0.8,
+    paths = 1,
+    rooms = 1
+  }
+}
+
+function layers:new(w, type)
+  type = type or layers.types.default
+  local h = map.tileSize
+  if type.thickness == "medium" then
+    h = math.random(2,8)*map.tileSize  
+  else
+    h = type.thickness*map.tileSize
+  end
+  
   local y = 300 -- default starting layer y position
 
   if #layers ~= 0 then
@@ -20,7 +42,7 @@ function layers:new(w)
 
 
   newLayer.body = love.physics.newBody(world, 0, y)
-  newLayer.shapes = map.generateLayer(w, h)
+  newLayer.shapes = map.generateLayer(w, h, type)
   local fixtures = {}
 
   for i, shape in pairs(newLayer.shapes) do

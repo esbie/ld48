@@ -34,19 +34,23 @@ function map.generateRoom(tiles, totalCols, totalRows)
   end
 end
 
-function map.generateLayer(width, height)
+function map.generateLayer(width, height, type)
   local tiles = {}
   local totalRows = height/20
   local totalCols = width/20
   local result = {}
 
-  map.generatePath(tiles, totalCols, totalRows)
-  map.generateRoom(tiles, totalCols, totalRows)
+  if type.paths > 0 then
+    map.generatePath(tiles, totalCols, totalRows)
+  end
+  if type.rooms > 0 then
+    map.generateRoom(tiles, totalCols, totalRows)
+  end
 
   for col=1, totalCols do
     ensureCol(tiles, col)
     for row=1, totalRows do
-      if math.random() < 0.7 and tiles[col][row] ~= empty then
+      if math.random() < type.density and tiles[col][row] ~= empty then
         tiles[col][row] = true
         result[#result+1] = love.physics.newRectangleShape(((col-1)*map.tileSize+map.tileSize/2), ((row-1)*map.tileSize), map.tileSize, map.tileSize, 0)
       end
