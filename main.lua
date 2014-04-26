@@ -41,11 +41,13 @@ function love.keyreleased(key)
 end
 
 function love.mousepressed(x, y, button)
+  player.body:setSleepingAllowed(false)
   prevMouseX = x
   layers:selectLayer(x, y)
 end
 
 function love.mousereleased(x, y, button)
+  player.body:setSleepingAllowed(true)
   layers:deselectLayer()
 end
 
