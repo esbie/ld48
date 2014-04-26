@@ -5,7 +5,7 @@ player = {
 }
 
 function player.load(levelWidth)
-  player.body = love.physics.newBody(world, levelWidth*3/4, levelWidth/2, "dynamic")
+  player.body = love.physics.newBody(world, levelWidth*3/4, levelWidth/4, "dynamic")
   player.shape = love.physics.newRectangleShape(player.h, player.w)
   player.fixture = love.physics.newFixture(player.body, player.shape, 1)
   player.fixture:setRestitution(0.1)

@@ -19,12 +19,26 @@ function layers:mapMaker(width, height)
     row = row + 1
   end
 
+  --make at least one "room"
+  local roomColSize = totalCols/4
+  local roomRowSize = totalRows/2
+  
+  for col = math.random(1, totalCols/2), col+roomColSize do
+    if tiles[col] == nil then
+      tiles[col] = {}
+    end
+    for row = math.random(1, totalRows/2), row+roomRowSize do
+      tiles[col][row] = empty
+    end
+  end
+
+
   for col=1, totalCols do
     if tiles[col] == nil then
       tiles[col] = {}
     end
     for row=1, totalRows do
-      if math.random() < 0.6 and tiles[col][row] ~= empty then
+      if math.random() < 0.7 and tiles[col][row] ~= empty then
         tiles[col][row] = true
         result[#result+1] = love.physics.newRectangleShape(((col-1)*tileSize+tileSize/2), ((row-1)*tileSize), tileSize, tileSize, 0)
       end
@@ -35,7 +49,7 @@ end
 
 function layers:new(w)
   local tileSize = 20
-  local h = math.random(1,8)*tileSize
+  local h = math.random(2,8)*tileSize
   local y = 300 -- default starting layer y position
 
   if #layers ~= 0 then

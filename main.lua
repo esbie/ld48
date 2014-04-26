@@ -2,6 +2,8 @@ require("player")
 require("layers")
 
 function love.load()
+  -- http://love2d.org/forums/viewtopic.php?t=76014&p=156747
+  math.randomseed( tonumber(tostring(os.time()):reverse():sub(1,6)) )
   pixelPerMeter = 64
   gravity = 9.81
   levelWidth = 650
