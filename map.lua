@@ -20,6 +20,44 @@ function map.generatePath(tiles, totalCols, totalRows)
   end
 end
 
+function map.generateWalkabout(tiles, totalCols, totalRows)
+  local col = math.random(1, totalCols)
+  local row = 1
+
+  while row <= totalRows do
+    print(row .. " of total: " .. totalRows)
+    ensureCol(tiles, col)
+    tiles[col][row] = empty
+
+    local possibleNextSteps = {}
+    if row <= totalRows and tiles[col][row+1] ~= empty then
+      table.insert(possibleNextSteps, "down")
+    end
+    -- if row > 1 and tiles[col][row-1] ~= empty then
+    --   table.insert(possibleNextSteps, "up")
+    -- end
+    if col > 1 and (tiles[col-1] == nil or tiles[col-1][row] ~= empty) then
+      table.insert(possibleNextSteps, "left")
+    end
+    if col <= totalCols and (tiles[col+1] == nil or tiles[col+1][row] ~= empty) then
+      table.insert(possibleNextSteps, "right")
+    end
+
+    -- assumes there is at least one possibleNextStep
+    local nextStep = math.random(1, #possibleNextSteps)
+
+    if possibleNextSteps[nextStep] == "up" then
+      row = row - 1
+    elseif possibleNextSteps[nextStep] == "down" then
+      row = row + 1
+    elseif possibleNextSteps[nextStep] == "left" then
+      col = col - 1
+    elseif possibleNextSteps[nextStep] == "right" then
+      col = col + 1
+    end
+  end
+end
+
 function map.generateRoom(tiles, totalCols, totalRows)
   local roomColSize = totalCols/4
   local roomRowSize = totalRows/2
@@ -41,7 +79,7 @@ function map.generateLayer(width, height, type)
   local result = {}
 
   if type.paths > 0 then
-    map.generatePath(tiles, totalCols, totalRows)
+    map.generateWalkabout(tiles, totalCols, totalRows)
   end
   if type.rooms > 0 then
     map.generateRoom(tiles, totalCols, totalRows)
@@ -69,6 +107,5 @@ function map.generateShape(col, row, colOffset, rowOffset)
     (rowOffset + (row-1)*map.tileSize), 
     map.tileSize, 
     map.tileSize, 
-    0
-  )
+    0)
 end
