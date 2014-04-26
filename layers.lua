@@ -1,6 +1,6 @@
 layers = {}
 
-function layers:new(y, w, h)
+function layers:new(w, h)
   local newLayer = {
     h = h,
     w = w
@@ -8,6 +8,15 @@ function layers:new(y, w, h)
   newLayer.r = math.random(130,150)
   newLayer.g = math.random(60,80)
   newLayer.b = math.random(10,25)
+
+  local y = 400 -- default starting layer y position
+
+  if #layers ~= 0 then
+    local lastLayer = layers[#layers]
+    y = lastLayer.body:getY() + h/2 + lastLayer.h/2
+  end
+
+
   newLayer.body = love.physics.newBody(world, 0, y) --remember, the shape (the rectangle we create next) anchors to the body from its center, so we have to move it to (650/2, 650-50/2)
   newLayer.shape = love.physics.newRectangleShape(newLayer.w/2, 0, newLayer.w, newLayer.h, 0) --make a rectangle with a width of 650 and a height of 50
   newLayer.fixture = love.physics.newFixture(newLayer.body, newLayer.shape) --attach shape to body
