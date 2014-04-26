@@ -8,8 +8,9 @@ function love.load()
 
   love.physics.setMeter(pixelPerMeter)
   world = love.physics.newWorld(0, gravity*pixelPerMeter, true)
-  ground = layers:new(levelWidth, 150)
-  otherGround = layers:new(levelWidth, 100)
+  ground = layers:new(levelWidth)
+  otherGround = layers:new(levelWidth)
+  lastGround = layers:new(levelWidth)
 
   player.load(levelWidth)
 
@@ -55,6 +56,10 @@ end
 
 function fillPhysicsRectangle(object)
   love.graphics.polygon("fill", object.body:getWorldPoints(object.shape:getPoints()))
+end
+
+function linePhysicsRectangle(object)
+  love.graphics.polygon("line", object.body:getWorldPoints(object.shape:getPoints()))
 end
 
 function love.quit()
