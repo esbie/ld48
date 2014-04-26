@@ -8,10 +8,10 @@ function love.load()
   world = love.physics.newWorld(0, gravity*pixelPerMeter, true)
 
   ground = {
-    h = 50,
+    h = 100,
     w = levelWidth
   }
-  ground.body = love.physics.newBody(world, levelWidth/2, levelWidth-ground.h/2) --remember, the shape (the rectangle we create next) anchors to the body from its center, so we have to move it to (650/2, 650-50/2)
+  ground.body = love.physics.newBody(world, levelWidth/2, levelWidth-ground.h) --remember, the shape (the rectangle we create next) anchors to the body from its center, so we have to move it to (650/2, 650-50/2)
   ground.shape = love.physics.newRectangleShape(ground.w, ground.h) --make a rectangle with a width of 650 and a height of 50
   ground.fixture = love.physics.newFixture(ground.body, ground.shape); --attach shape to body
 
@@ -39,6 +39,12 @@ function love.update(dt)
   elseif love.keyboard.isDown("left") then --press the left arrow key to push the ball to the left
     player.body:setLinearVelocity(-velocity, y)
   end
+
+  if love.mouse.isDown("l") then
+    dX = love.mouse.getX() - prevMouseX
+    ground.body:setX(ground.body:getX() + dX)
+    prevMouseX = love.mouse.getX()
+  end
 end
 
 function love.keypressed(key)
@@ -49,7 +55,6 @@ function love.keypressed(key)
 end
 
 function love.keyreleased(key)
-    
   if key == "escape" then
     love.event.quit()
   end
@@ -62,8 +67,15 @@ function love.keyreleased(key)
   end
 end
 
+function love.mousepressed( x, y, button )
+  prevMouseX = x
+  if ground.fixture:testPoint(x, y) then
+    print("found the ground!")
+  end
+end
+
 function love.draw()
-  love.graphics.setColor(72, 160, 14) -- set the drawing color to green for the ground
+  love.graphics.setColor(142, 69, 19) -- set the drawing color to green for the ground
   fillPhysicsRectangle(ground)
 
   love.graphics.setColor(47, 47, 14) --set the drawing color to red for the ball
