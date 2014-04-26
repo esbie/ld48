@@ -1,4 +1,5 @@
 require("player")
+require("layers")
 
 function love.load()
   pixelPerMeter = 64
@@ -7,14 +8,7 @@ function love.load()
 
   love.physics.setMeter(pixelPerMeter)
   world = love.physics.newWorld(0, gravity*pixelPerMeter, true)
-
-  ground = {
-    h = 100,
-    w = levelWidth
-  }
-  ground.body = love.physics.newBody(world, levelWidth/2, levelWidth-ground.h) --remember, the shape (the rectangle we create next) anchors to the body from its center, so we have to move it to (650/2, 650-50/2)
-  ground.shape = love.physics.newRectangleShape(ground.w, ground.h) --make a rectangle with a width of 650 and a height of 50
-  ground.fixture = love.physics.newFixture(ground.body, ground.shape) --attach shape to body
+  ground = layers:new(levelWidth/2, levelWidth-100, levelWidth, 100)
 
   player.load(levelWidth)
 
@@ -45,7 +39,7 @@ function love.keyreleased(key)
   player.keyreleased(key)
 end
 
-function love.mousepressed( x, y, button )
+function love.mousepressed(x, y, button)
   prevMouseX = x
   if ground.fixture:testPoint(x, y) then
     print("found the ground!")
@@ -56,8 +50,7 @@ function love.draw()
   love.graphics.setColor(142, 69, 19) -- set the drawing color to green for the ground
   fillPhysicsRectangle(ground)
 
-  love.graphics.setColor(47, 47, 14) --set the drawing color to red for the ball
-  fillPhysicsRectangle(player)
+  player.draw()
 end
 
 function fillPhysicsRectangle(object)

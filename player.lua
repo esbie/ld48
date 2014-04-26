@@ -23,12 +23,12 @@ end
 
 function player.keypressed(key)
   x, y = player.body:getLinearVelocity()
-  if key == "up" and (y > -10 and y < 10) then
+  if key == "up" and (y > -20 and y < 20) then
     player.body:setLinearVelocity(x, -player.velocity)
   end
 end
 
-function player.keyreleased( key )
+function player.keyreleased(key)
   x, y = player.body:getLinearVelocity()
   if key == "right" then --press the right arrow key to push the ball to the right
     player.body:setLinearVelocity(x/2, y)
@@ -36,3 +36,9 @@ function player.keyreleased( key )
     player.body:setLinearVelocity(x/2, y)
   end
 end
+
+function player.draw()
+  love.graphics.setColor(47, 47, 14) --set the drawing color to red for the ball
+  fillPhysicsRectangle(player)
+end
+
