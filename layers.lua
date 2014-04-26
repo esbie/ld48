@@ -6,11 +6,25 @@ function layers:mapMaker(width, height)
   local totalRows = height/20
   local totalCols = width/20
   local result = {}
+  local empty = "empty"
+
+  --make at least one pathway
+  local col = math.random(1, totalCols)
+  local row = 1
+  while row <= totalRows do
+    if tiles[col] == nil then
+      tiles[col] = {}
+    end
+    tiles[col][row] = empty
+    row = row + 1
+  end
 
   for col=1, totalCols do
-    tiles[col] = {}
+    if tiles[col] == nil then
+      tiles[col] = {}
+    end
     for row=1, totalRows do
-      if math.random() < 0.6 then
+      if math.random() < 0.6 and tiles[col][row] ~= empty then
         tiles[col][row] = true
         result[#result+1] = love.physics.newRectangleShape(((col-1)*tileSize+tileSize/2), ((row-1)*tileSize), tileSize, tileSize, 0)
       end
