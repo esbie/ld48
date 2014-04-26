@@ -22,8 +22,7 @@ function love.update(dt)
   
 
   if love.mouse.isDown("l") then
-    dX = love.mouse.getX() - prevMouseX
-    ground.body:setX(ground.body:getX() + dX)
+    layers:moveSelectedLayer(prevMouseX)
     prevMouseX = love.mouse.getX()
   end
 end
@@ -41,9 +40,11 @@ end
 
 function love.mousepressed(x, y, button)
   prevMouseX = x
-  if ground.fixture:testPoint(x, y) then
-    print("found the ground!")
-  end
+  layers:selectLayer(x, y)
+end
+
+function love.mousereleased(x, y, button)
+  layers:deselectLayer()
 end
 
 function love.draw()
