@@ -72,11 +72,12 @@ function map.generateRoom(tiles, totalCols, totalRows)
   end
 end
 
-function map.generateLayer(width, height, type)
+function map.generateTiles(width, height, type)
   local tiles = {}
   local totalRows = math.floor(height/20)
   local totalCols = math.floor(width/20)
-  local result = {}
+  tiles.totalRows = totalRows
+  tiles.totalCols = totalCols
 
   if type.paths > 0 then
     map.generateWalkabout(tiles, totalCols, totalRows)
@@ -90,16 +91,13 @@ function map.generateLayer(width, height, type)
     for row=1, totalRows do
       if math.random() < type.density and tiles[col][row] ~= empty then
         tiles[col][row] = true
-        result[#result+1] = map.generateShape(col, row)
-        result[#result+1] = map.generateShape(col, row, totalCols*map.tileSize)
-        result[#result+1] = map.generateShape(col, row, -totalCols*map.tileSize)
       end
     end
   end
-  return result
+  return tiles
 end
 
-function map.generateShape(col, row, colOffset, rowOffset)
+local createShape = function(col, row, colOffset, rowOffset)
   colOffset = colOffset or 0
   rowOffset = rowOffset or 0
   return love.physics.newRectangleShape(
@@ -109,3 +107,20 @@ function map.generateShape(col, row, colOffset, rowOffset)
     map.tileSize, 
     0)
 end
+
+function map.generateShapes(tiles)
+  local result = {}
+  local totalCols = tiles.totalCols
+  local totalRows = tiles.totalRows
+  for col=1, totalCols do
+    for row=1, totalRows do
+      if tiles[col][row] == true then
+        result[#result+1] = createShape(col, row)
+        result[#result+1] = createShape(col, row, totalCols*map.tileSize)
+        result[#result+1] = createShape(col, row, -totalCols*map.tileSize)
+      end
+    end
+  end
+  return result
+end
+

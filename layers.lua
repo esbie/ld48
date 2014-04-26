@@ -50,7 +50,9 @@ function layers:new(w, type)
 
 
   newLayer.body = love.physics.newBody(world, 0, y)
-  newLayer.shapes = map.generateLayer(w, h, type)
+  newLayer.tiles = map.generateTiles(w, h, type)
+  newLayer.shapes = map.generateShapes(newLayer.tiles)
+
   local fixtures = {}
 
   for i, shape in pairs(newLayer.shapes) do

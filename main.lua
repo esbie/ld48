@@ -1,5 +1,6 @@
 require("player")
 require("map")
+require("items")
 require("layers")
 
 function love.load()
