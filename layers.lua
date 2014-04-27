@@ -2,9 +2,9 @@ layers = {}
 
 layers.types = {
   {
-    thickness = 1,
+    thickness = 2,
     density = 1.0,
-    paths = 1,
+    paths = 2,
     rooms = 0,
     itemDensity = 0.1
   },

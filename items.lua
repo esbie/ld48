@@ -17,5 +17,7 @@ end
 function items:collide(a, b, coll)
   if a:getCategory() == 3 then
     a:setUserData("removed")
+  elseif b:getCategory() == 3 then
+    b:setUserData("removed")
   end
 end
