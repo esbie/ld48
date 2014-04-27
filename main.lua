@@ -12,6 +12,7 @@ function love.load()
 
   love.physics.setMeter(pixelPerMeter)
   world = love.physics.newWorld(0, gravity*pixelPerMeter, true)
+  world:setCallbacks(beginContact)
   ground = layers:new(levelWidth)
   otherGround = layers:new(levelWidth, layers.types.thinAndImpassible)
   lastGround = layers:new(levelWidth, layers.types.wormTown)
@@ -20,6 +21,10 @@ function love.load()
 
   love.graphics.setBackgroundColor(200, 200, 248) --set the background color to a nice blue
   love.window.setMode(levelWidth, levelWidth) --set the window dimensions to 650 by 650
+end
+
+function beginContact(a, b, coll)
+  items:collide(a, b, coll)
 end
 
 function love.update(dt)

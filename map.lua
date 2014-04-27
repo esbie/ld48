@@ -124,3 +124,17 @@ function map.generateShapes(tiles)
   return result
 end
 
+function map.generateItems(layer, tiles, percentage)
+  percentage = percentage or 0.3
+  local result = {}
+  local totalCols = tiles.totalCols
+  local totalRows = tiles.totalRows
+  for col=1, totalCols do
+    for row=1, totalRows do
+      if tiles[col][row] ~= true and tiles[col][row+1] == true then
+        result[#result+1] = items:new(layer, (col-1)*map.tileSize+map.tileSize/2, (row-1)*map.tileSize)
+      end
+    end
+  end
+  return result
+end

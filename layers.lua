@@ -52,6 +52,7 @@ function layers:new(w, type)
   newLayer.body = love.physics.newBody(world, 0, y)
   newLayer.tiles = map.generateTiles(w, h, type)
   newLayer.shapes = map.generateShapes(newLayer.tiles)
+  newLayer.items = map.generateItems(newLayer, newLayer.tiles)
 
   local fixtures = {}
 
@@ -109,6 +110,23 @@ function layers:drawLayer(layer)
     love.graphics.setColor(10, 10, 10)
     love.graphics.polygon("line", layer.body:getWorldPoints(shape:getPoints()))
   end
+
+  local toRemove = {}
+  for i, item in ipairs(layer.items) do
+    if item.fixture:getUserData() == "removed" then
+      table.insert(toRemove, i)
+      item.fixture:setUserData("destroyed")
+    elseif item.fixture:getUserData() == "destroyed" then
+      break;
+    else
+      items:draw(item)
+    end
+  end
+
+  for i, item in ipairs(toRemove) do
+    layer.items[item].fixture:destroy()
+    table.remove(layer.items, item)
+  end  
 end
 
 function layers:containsBody(layer, body)
