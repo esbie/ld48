@@ -38,7 +38,7 @@ function player.keyreleased(key)
 end
 
 function player.draw()
-  love.graphics.setColor(47, 47, 14)
+  love.graphics.setColor(100, 100, 100)
   fillPhysicsRectangle(player)
 end
 

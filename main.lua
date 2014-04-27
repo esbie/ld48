@@ -14,14 +14,13 @@ function love.load()
   world = love.physics.newWorld(0, gravity*pixelPerMeter, true)
   world:setCallbacks(beginContact)
 
-
   for i=1, 5 do
     layers:new(levelWidth)
   end
 
   player.load(levelWidth)
 
-  love.graphics.setBackgroundColor(200, 200, 248) --set the background color to a nice blue
+  love.graphics.setBackgroundColor(30, 10, 5) --set the background color to a nice blue
   love.window.setMode(levelWidth, levelWidth) --set the window dimensions to 650 by 650
 end
 

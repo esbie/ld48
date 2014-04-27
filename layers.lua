@@ -44,9 +44,21 @@ function layers:new(w, type)
     h = h,
     w = w
   }
-  newLayer.r = math.random(130,150)
-  newLayer.g = math.random(60,80)
-  newLayer.b = math.random(10,25)
+
+  local color = math.random(1,3)
+  if color == 1 then
+    newLayer.r = math.random(130,150)
+    newLayer.g = math.random(60,80)
+    newLayer.b = math.random(10,25)
+  elseif color == 2 then
+    newLayer.r = math.random(220,150)
+    newLayer.g = math.random(40,60)
+    newLayer.b = math.random(0,15)
+  else
+    newLayer.r = math.random(200,255)
+    newLayer.g = math.random(200,255)
+    newLayer.b = math.random(200,255)
+  end
 
 
   newLayer.body = love.physics.newBody(world, 0, y)
