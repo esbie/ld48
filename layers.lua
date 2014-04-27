@@ -4,21 +4,21 @@ layers.types = {
   {
     thickness = 2,
     density = 1.0,
-    paths = 2,
+    paths = 4,
     rooms = 0,
     itemDensity = 0.1
   },
   {
     thickness = "medium",
     density = 0.8,
-    paths = 2,
-    rooms = 1,
+    paths = 4,
+    rooms = 2,
     itemDensity = 0.07
   },
   {
     thickness = "large",
     density = 0.8,
-    paths = 10,
+    paths = 15,
     rooms = 0,
     itemDensity = 0.01
   }
