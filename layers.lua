@@ -94,6 +94,14 @@ function layers:new(type)
   return newLayer
 end
 
+function layers:sleepSomeLayers(currIndex)
+  print(currIndex)
+  for i, layer in ipairs(layers) do
+    local shouldBeActive = i > currIndex - 3 and i < currIndex + 3
+    layer.body:setActive(shouldBeActive)
+  end
+end
+
 local levelBottom = function(lastLayer, yOffset)
   return lastLayer.h + lastLayer.y - yOffset
 end
@@ -134,7 +142,9 @@ end
 
 function layers:draw()
   for i, layer in ipairs(layers) do
-    layers:drawLayer(layer)
+    if layer.y - camera.y < levelHeight and layer.y + layer.h - camera.y > 0 then
+      layers:drawLayer(layer)
+    end
   end
 end
 

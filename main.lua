@@ -42,6 +42,7 @@ function love.update(dt)
     if updateDir == "down" then
       layers:generateMoreLayers(camera.y)
     end
+    layers:sleepSomeLayers(player.currentLayerIndex)
   end
   camera:update(dt)
 end

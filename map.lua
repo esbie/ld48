@@ -25,7 +25,6 @@ function map.generateWalkabout(tiles, totalCols, totalRows)
   local row = 1
 
   while row <= totalRows do
-    print(row .. " of total: " .. totalRows)
     ensureCol(tiles, col)
     tiles[col][row] = empty
 
