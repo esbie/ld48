@@ -149,6 +149,25 @@ function map.generateShapes(tiles, result, integerOffset)
   return result
 end
 
+function map.generateBackgroundShapes(tiles)
+  local totalCols = tiles.totalCols
+  local totalRows = tiles.totalRows
+  local result = {}
+  for col=1, totalCols do
+    for row=1, totalRows do
+      if tiles[col][row] == true then
+        result[#result+1] = love.physics.newRectangleShape(
+          ((totalCols - (col-1))*map.tileSize-map.tileSize/2), 
+          ((row-1)*map.tileSize), 
+          map.tileSize, 
+          map.tileSize, 
+          0)
+      end
+    end
+  end
+  return result
+end
+
 function map.generateItems(layer, tiles, percentage)
   percentage = percentage or 0.1
   local result = {}

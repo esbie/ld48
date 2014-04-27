@@ -24,7 +24,7 @@ function love.load()
 
   player.load(levelWidth)
 
-  love.graphics.setBackgroundColor(30, 10, 5)
+  love.graphics.setBackgroundColor(0,0,0)
   love.window.setMode(levelWidth, levelHeight)
 end
 

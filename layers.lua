@@ -82,6 +82,15 @@ function layers:new(type)
   map.generateAdditionalItems(newLayer.tiles, newLayer.items, 1)
   map.generateAdditionalItems(newLayer.tiles, newLayer.items, -1)
 
+  newLayer.bg = {}
+  newLayer.bg.body = love.physics.newBody(world, 0, y, "static")
+  newLayer.bg.body:setActive(false)
+  newLayer.bg.shapes = map.generateBackgroundShapes(newLayer.tiles)
+  newLayer.bg.fixtures = {}
+  for i, shape in pairs(newLayer.bg.shapes) do
+    newLayer.bg.fixtures[#newLayer.bg.fixtures+1] = love.physics.newFixture(newLayer.bg.body, shape)
+  end
+
   local fixtures = {}
 
   for i, shape in pairs(newLayer.shapes) do
@@ -127,6 +136,7 @@ end
 function layers:moveLayer(sl, dX)
   if sl == nil then return end
   sl.body:setX(sl.body:getX() + dX)
+  sl.bg.body:setX(sl.bg.body:getX() - dX)
 
   player.body:setLinearVelocity(0,0)
   player.body:setX(player.body:getX() + dX)
@@ -149,8 +159,15 @@ function layers:draw()
 end
 
 function layers:drawLayer(layer)
+  local damper = 90
+  love.graphics.setColor(math.max(layer.r/2-damper,5), math.max(layer.g/2-damper,5), math.max(layer.b/2-damper,5))
+  -- love.graphics.setColor(255, 255, 255)
+  for i, shape in ipairs(layer.bg.shapes) do
+    love.graphics.polygon("fill", layer.bg.body:getWorldPoints(shape:getPoints()))
+  end
+
+  love.graphics.setColor(layer.r, layer.g, layer.b)
   for i, shape in ipairs(layer.shapes) do
-    love.graphics.setColor(layer.r, layer.g, layer.b)
     love.graphics.polygon("fill", layer.body:getWorldPoints(shape:getPoints()))
   end
 
