@@ -35,7 +35,7 @@ function layers:new(w, type)
     h = type.thickness*map.tileSize
   end
   
-  local y = 300 -- default starting layer y position
+  local y = 100 -- default starting layer y position
 
   if #layers ~= 0 then
     local lastLayer = layers[#layers]
@@ -86,16 +86,20 @@ function layers:new(w, type)
   return newLayer
 end
 
-function layers:moveSelectedLayer(oldX)
-  local sl = layers.selectedLayer
+function layers:moveLayerLeft(sl)
+  layers:moveLayer(sl, -5)
+end
+
+function layers:moveLayerRight(sl)
+  layers:moveLayer(sl, 5)
+end
+
+function layers:moveLayer(sl, dX)
   if sl == nil then return end
-  dX = love.mouse.getX() - oldX
   sl.body:setX(sl.body:getX() + dX)
 
-  if layers:containsBody(sl, player.body) then
-    player.body:setLinearVelocity(0,0)
-    player.body:setX(player.body:getX() + dX)
-  end
+  player.body:setLinearVelocity(0,0)
+  player.body:setX(player.body:getX() + dX)
 
   for i, item in ipairs(sl.items) do
     item.body:setX(item.body:getX() + dX)
@@ -104,25 +108,6 @@ function layers:moveSelectedLayer(oldX)
   for i, prison in ipairs(sl.prisons) do
     prison.body:setX(prison.body:getX() + dX)
   end
-end
-
-function layers:selectLayer(x,y)
-  for i, layer in ipairs(layers) do
-    for j, fixture in ipairs(layer.fixtures) do
-      if fixture:testPoint(x, y) then
-        print("layer selected: " .. i)
-        layers.selectedLayer = layer
-        return layer
-      end
-    end
-  end
-
-  return false
-end
-
-function layers:deselectLayer()
-  layers.selectedLayer = nil
-  print("layer unselected")
 end
 
 function layers:draw()

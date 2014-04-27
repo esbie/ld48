@@ -32,12 +32,6 @@ end
 function love.update(dt)
   world:update(dt) --this puts the world into motion
   player.update(dt)
-  
-
-  if love.mouse.isDown("l") then
-    layers:moveSelectedLayer(prevMouseX)
-    prevMouseX = love.mouse.getX()
-  end
 end
 
 function love.keypressed(key)
@@ -52,14 +46,9 @@ function love.keyreleased(key)
 end
 
 function love.mousepressed(x, y, button)
-  player.body:setSleepingAllowed(false)
-  prevMouseX = x
-  layers:selectLayer(x, y)
 end
 
 function love.mousereleased(x, y, button)
-  player.body:setSleepingAllowed(true)
-  layers:deselectLayer()
 end
 
 function love.draw()
