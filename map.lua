@@ -64,12 +64,36 @@ function map.generateRoom(tiles, totalCols, totalRows)
   
   local col = math.random(1, totalCols/2)
   local row = math.random(1, totalRows/2)
+
   for col = col, col+roomColSize do
     ensureCol(tiles, col)
     for row = row, row+roomRowSize do
       tiles[col][row] = empty
     end
   end
+end
+
+--needs to happen before generating shapes
+function map.generatePrison(parentBody, tiles)
+  local roomColSize = 4
+  local roomRowSize = 3
+
+  local totalRows = tiles.totalRows
+  local totalCols = tiles.totalCols
+  
+  local col = math.random(1, totalCols-roomColSize)
+  local row = math.random(1, totalRows-roomRowSize)
+
+  local prison = prisons:new(parentBody, (col-1)*map.tileSize+map.tileSize/2, (row-1)*map.tileSize)
+
+  for col = col, col+roomColSize+1 do
+    ensureCol(tiles, col)
+    for row = row, row+roomRowSize do
+      tiles[col][row] = empty
+    end
+  end
+
+  return prison
 end
 
 function map.generateTiles(width, height, type)

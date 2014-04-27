@@ -63,6 +63,7 @@ function layers:new(w, type)
 
   newLayer.body = love.physics.newBody(world, 0, y)
   newLayer.tiles = map.generateTiles(w, h, type)
+  newLayer.prison = map.generatePrison(newLayer.body, newLayer.tiles)
   newLayer.shapes = map.generateShapes(newLayer.tiles)
   newLayer.items = map.generateItems(newLayer, newLayer.tiles)
 
@@ -138,6 +139,8 @@ function layers:drawLayer(layer)
       items:draw(item)
     end
   end
+
+  prisons:draw(layer.prison)
 
   for i, item in ipairs(toRemove) do
     layer.items[item].fixture:destroy()

@@ -1,5 +1,6 @@
 require("player")
 require("map")
+require("prisons")
 require("items")
 require("layers")
 
