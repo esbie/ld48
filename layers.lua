@@ -76,6 +76,10 @@ function layers:moveSelectedLayer(oldX)
     player.body:setLinearVelocity(0,0)
     player.body:setX(player.body:getX() + dX)
   end
+
+  for i, item in ipairs(sl.items) do
+    item.body:setX(item.body:getX() + dX)
+  end
 end
 
 function layers:selectLayer(x,y)
