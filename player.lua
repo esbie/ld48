@@ -1,7 +1,7 @@
 player = {
   h = 10,
   w = 10,
-  velocity = 300
+  velocity = 200
 }
 
 function player.load(levelWidth)
@@ -24,16 +24,16 @@ end
 function player.keypressed(key)
   x, y = player.body:getLinearVelocity()
   if key == "up" and (y > -20 and y < 20) then
-    player.body:setLinearVelocity(x, -player.velocity)
+    player.body:setLinearVelocity(x, -(player.velocity+100))
   end
 end
 
 function player.keyreleased(key)
   x, y = player.body:getLinearVelocity()
   if key == "right" then
-    player.body:setLinearVelocity(x/2, y)
+    player.body:setLinearVelocity(x/3, y)
   elseif key == "left" then
-    player.body:setLinearVelocity(x/2, y)
+    player.body:setLinearVelocity(x/3, y)
   end
 end
 
