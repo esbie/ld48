@@ -67,9 +67,9 @@ function layers:new(w, type)
   newLayer.body = love.physics.newBody(world, 0, y)
   newLayer.tiles = map.generateTiles(w, h, type)
   newLayer.prisons = {}
-  if h > 80 then
-    table.insert(newLayer.prisons, map.generatePrison(newLayer.body, newLayer.tiles))
-  end
+  -- if h > 80 then
+  --   table.insert(newLayer.prisons, map.generatePrison(newLayer.body, newLayer.tiles))
+  -- end
 
   newLayer.shapes = map.generateShapes(newLayer.tiles)
   newLayer.items = map.generateItems(newLayer, newLayer.tiles, type.itemDensity)
