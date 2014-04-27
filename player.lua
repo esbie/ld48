@@ -12,8 +12,8 @@ function player.load(levelWidth)
   player.fixture:setRestitution(0.1)
 end
 
-function player.update(dt)
-  x, y = player.body:getLinearVelocity()
+function player.currLayerUpdate( dt )
+  local x, y = player.body:getPosition()
   local i = player.currentLayerIndex
   if i == 0 and layers:containsBody(layers[1], player.body) then 
     player.currentLayerIndex = 1
@@ -21,14 +21,20 @@ function player.update(dt)
     local currLayer = layers[i]
     
     if  not layers:containsBody(currLayer, player.body) then
-      if player.body:getY() < currLayer.y and i ~= 1 then
+      if y < currLayer.y and i ~= 1 then
         player.currentLayerIndex = i - 1
         currLayer = layers[i-1]
-        camera:animate(-currLayer.h)
+        if y - camera.y < levelHeight/4 or (y - camera.y < levelHeight/2 and currLayer.h > levelHeight/4) then
+          print(y+camera.y)
+          camera:animate(-currLayer.h)
+        end
       else
         player.currentLayerIndex = i + 1
         currLayer = layers[i+1]
-        camera:animate(currLayer.h)
+        if y - camera.y > levelHeight*3/4 or (y - camera.y > levelHeight/2 and currLayer.h > levelHeight/4) then
+          print(y+camera.y)
+          camera:animate(currLayer.h)
+        end
       end
       print("changed current layer to "..player.currentLayerIndex)
     end
@@ -39,12 +45,18 @@ function player.update(dt)
       layers:moveLayerRight(currLayer)
     end
   end
+end
+
+function player.update(dt)
+  local x, y = player.body:getLinearVelocity()
 
   if love.keyboard.isDown("right") or love.keyboard.isDown("d") then
     player.body:setLinearVelocity(player.velocity, y)
   elseif love.keyboard.isDown("left") or love.keyboard.isDown("a") then
     player.body:setLinearVelocity(-player.velocity, y)
-  end  
+  end
+
+  player.currLayerUpdate(dt)
 end
 
 function player.keypressed(key)

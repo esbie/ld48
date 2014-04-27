@@ -11,6 +11,7 @@ function love.load()
   pixelPerMeter = 64
   gravity = 9.81
   levelWidth = 650
+  levelHeight = 650
 
   love.physics.setMeter(pixelPerMeter)
   world = love.physics.newWorld(0, gravity*pixelPerMeter, true)
@@ -24,7 +25,7 @@ function love.load()
   player.load(levelWidth)
 
   love.graphics.setBackgroundColor(30, 10, 5)
-  love.window.setMode(levelWidth, levelWidth)
+  love.window.setMode(levelWidth, levelHeight)
 end
 
 function beginContact(a, b, coll)
