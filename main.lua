@@ -35,6 +35,11 @@ end
 function love.update(dt)
   world:update(dt)
   player.update(dt)
+  local updateDir = player.updateLayerIndex(dt)
+  if updateDir then
+    print("changed current layer to "..player.currentLayerIndex)
+    camera:animateLayerChange(player.body, layers[player.currentLayerIndex], updateDir)
+  end
   camera:update(dt)
 end
 

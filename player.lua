@@ -12,38 +12,28 @@ function player.load(levelWidth)
   player.fixture:setRestitution(0.1)
 end
 
-function player.currLayerUpdate( dt )
-  local x, y = player.body:getPosition()
+function player.updateLayerIndex(dt)
+  local y = player.body:getY()
   local i = player.currentLayerIndex
   if i == 0 and layers:containsBody(layers[1], player.body) then 
     player.currentLayerIndex = 1
+    return "down"
   elseif i > 0 and i < #layers+1 then
     local currLayer = layers[i]
     
-    if  not layers:containsBody(currLayer, player.body) then
+    if not layers:containsBody(currLayer, player.body) then
       if y < currLayer.y and i ~= 1 then
         player.currentLayerIndex = i - 1
-        currLayer = layers[i-1]
-        if y - camera.y < levelHeight/4 or (y - camera.y < levelHeight/2 and currLayer.h > levelHeight/4) then
-          print(y+camera.y)
-          camera:animate(-currLayer.h)
-        end
-      else
+        return "up"
+      elseif y >= currLayer.y and i < #layers then
         player.currentLayerIndex = i + 1
-        currLayer = layers[i+1]
-        if y - camera.y > levelHeight*3/4 or (y - camera.y > levelHeight/2 and currLayer.h > levelHeight/4) then
-          print(y+camera.y)
-          camera:animate(currLayer.h)
-        end
+        return "down"
+      else
+        return false
       end
-      print("changed current layer to "..player.currentLayerIndex)
     end
-
-    if love.keyboard.isDown("q") then
-      layers:moveLayerLeft(currLayer)
-    elseif love.keyboard.isDown("e") then
-      layers:moveLayerRight(currLayer)
-    end
+  else
+    return false
   end
 end
 
@@ -56,7 +46,15 @@ function player.update(dt)
     player.body:setLinearVelocity(-player.velocity, y)
   end
 
-  player.currLayerUpdate(dt)
+  local i = player.currentLayerIndex
+  local currLayer = layers[i]
+  if i > 0 and i < #layers+1 then
+    if love.keyboard.isDown("q") then
+      layers:moveLayerLeft(currLayer)
+    elseif love.keyboard.isDown("e") then
+      layers:moveLayerRight(currLayer)
+    end
+  end
 end
 
 function player.keypressed(key)

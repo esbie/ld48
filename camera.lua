@@ -60,3 +60,35 @@ function camera:animate(dy)
     dir = dy > 0 and 1 or -1
   }
 end
+
+local isNearTopOfScreen = function (y)
+  return y - camera.y < levelHeight/4
+end
+
+local isNearBottomOfScreen = function (y)
+  return y - camera.y > levelHeight*3/4
+end
+
+local isInTopHalfOfScreen = function (y)
+  return y - camera.y < levelHeight/2
+end
+
+local isInBottomHalfOfScreen = function (y)
+  return y - camera.y > levelHeight/2
+end
+
+local isTall = function(layer)
+  return layer.h > levelHeight/4
+end
+
+function camera:animateLayerChange(body, layer, dir)
+  local y = body:getY()
+  if dir == "up" and (isNearTopOfScreen(y) or isInTopHalfOfScreen(y) and isTall(layer)) then
+    print("decided to animate up by "..layer.h)
+    camera:animate(-layer.h)
+  end
+  if dir == "down" and (isNearBottomOfScreen(y) or isInBottomHalfOfScreen(y) and isTall(layer)) then
+    print("decided to animate down by "..layer.h)
+    camera:animate(layer.h)
+  end
+end
