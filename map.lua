@@ -43,7 +43,10 @@ function map.generateWalkabout(tiles, totalCols, totalRows)
       table.insert(possibleNextSteps, "right")
     end
 
-    -- assumes there is at least one possibleNextStep
+    if #possibleNextSteps == 0 then
+      return
+    end
+
     local nextStep = math.random(1, #possibleNextSteps)
 
     if possibleNextSteps[nextStep] == "up" then
@@ -84,7 +87,7 @@ function map.generatePrison(parentBody, tiles)
   local col = math.random(1, totalCols-roomColSize)
   local row = math.random(1, totalRows-roomRowSize)
 
-  local prison = prisons:new(parentBody, (col-1)*map.tileSize+map.tileSize/2, (row-1)*map.tileSize)
+  local prison = prisons:new(parentBody, (col-1)*map.tileSize, (row-1)*map.tileSize)
 
   for col = col, col+roomColSize+1 do
     ensureCol(tiles, col)
@@ -103,10 +106,10 @@ function map.generateTiles(width, height, type)
   tiles.totalRows = totalRows
   tiles.totalCols = totalCols
 
-  if type.paths > 0 then
+  for paths=1, type.paths do
     map.generateWalkabout(tiles, totalCols, totalRows)
   end
-  if type.rooms > 0 then
+  for rooms=1, type.rooms do
     map.generateRoom(tiles, totalCols, totalRows)
   end
 

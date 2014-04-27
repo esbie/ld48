@@ -1,19 +1,19 @@
 layers = {}
 
 layers.types = {
-  thinAndImpassible = {
+  {
     thickness = 1,
     density = 1.0,
     paths = 1,
     rooms = 0
   },
-  default = {
+  {
     thickness = "medium",
     density = 0.8,
-    paths = 1,
+    paths = 2,
     rooms = 1
   },
-  wormTown = {
+  {
     thickness = "large",
     density = 0.8,
     paths = 10,
@@ -22,7 +22,7 @@ layers.types = {
 }
 
 function layers:new(w, type)
-  type = type or layers.types.default
+  type = type or layers.types[math.random(1,3)]
   local h = map.tileSize
   if type.thickness == "medium" then
     h = math.random(4,6)*map.tileSize  
@@ -63,7 +63,11 @@ function layers:new(w, type)
 
   newLayer.body = love.physics.newBody(world, 0, y)
   newLayer.tiles = map.generateTiles(w, h, type)
-  newLayer.prison = map.generatePrison(newLayer.body, newLayer.tiles)
+  newLayer.prisons = {}
+  if h > 80 then
+    table.insert(newLayer.prisons, map.generatePrison(newLayer.body, newLayer.tiles))
+  end
+
   newLayer.shapes = map.generateShapes(newLayer.tiles)
   newLayer.items = map.generateItems(newLayer, newLayer.tiles)
 
@@ -92,6 +96,10 @@ function layers:moveSelectedLayer(oldX)
 
   for i, item in ipairs(sl.items) do
     item.body:setX(item.body:getX() + dX)
+  end
+
+  for i, prison in ipairs(sl.prisons) do
+    prison.body:setX(prison.body:getX() + dX)
   end
 end
 
@@ -140,12 +148,14 @@ function layers:drawLayer(layer)
     end
   end
 
-  prisons:draw(layer.prison)
-
   for i, item in ipairs(toRemove) do
     layer.items[item].fixture:destroy()
     table.remove(layer.items, item)
   end  
+
+  for i, prison in ipairs(layer.prisons) do
+    prisons:draw(prison)
+  end
 end
 
 function layers:containsBody(layer, body)
