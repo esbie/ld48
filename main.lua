@@ -17,9 +17,9 @@ function love.load()
   world = love.physics.newWorld(0, gravity*pixelPerMeter, true)
   world:setCallbacks(beginContact)
 
-  layers:new(levelWidth)
-  while layers[#layers].y < levelWidth do
-    layers:new(levelWidth)
+  layers:new()
+  while layers[#layers].y < levelHeight do
+    layers:new()
   end
 
   player.load(levelWidth)
@@ -39,6 +39,9 @@ function love.update(dt)
   if updateDir then
     print("changed current layer to "..player.currentLayerIndex)
     camera:animateLayerChange(player.body, layers[player.currentLayerIndex], updateDir)
+    if updateDir == "down" then
+      layers:generateMoreLayers(camera.y)
+    end
   end
   camera:update(dt)
 end

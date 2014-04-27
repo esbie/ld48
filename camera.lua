@@ -46,18 +46,18 @@ function camera:update(dt)
   if self.currentAnimation then
     dy = self.speed * self.currentAnimation.dir
     self.y = self.y + dy
-    self.currentAnimation.traveled = self.currentAnimation.traveled + dy
+    self.currentAnimation.traveled = self.currentAnimation.traveled + self.speed
     if self.currentAnimation.traveled >= self.currentAnimation.total then
       self.currentAnimation = nil
     end
   end
 end
 
-function camera:animate(dy)
+function camera:animate(dy, dir)
   self.currentAnimation = {
     total = dy,
     traveled = 0,
-    dir = dy > 0 and 1 or -1
+    dir = dir
   }
 end
 
@@ -85,10 +85,10 @@ function camera:animateLayerChange(body, layer, dir)
   local y = body:getY()
   if dir == "up" and (isNearTopOfScreen(y) or isInTopHalfOfScreen(y) and isTall(layer)) then
     print("decided to animate up by "..layer.h)
-    camera:animate(-layer.h)
+    camera:animate(layer.h, -1)
   end
   if dir == "down" and (isNearBottomOfScreen(y) or isInBottomHalfOfScreen(y) and isTall(layer)) then
     print("decided to animate down by "..layer.h)
-    camera:animate(layer.h)
+    camera:animate(layer.h, 1)
   end
 end
