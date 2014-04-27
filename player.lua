@@ -16,16 +16,19 @@ function player.update(dt)
   x, y = player.body:getLinearVelocity()
   local i = player.currentLayerIndex
   if i == 0 and layers:containsBody(layers[1], player.body) then 
-    print("changed current layer to 1!")
     player.currentLayerIndex = 1
   elseif i > 0 and i < #layers+1 then
     local currLayer = layers[i]
     
     if  not layers:containsBody(currLayer, player.body) then
-      if player.body:getY() < currLayer.y then
+      if player.body:getY() < currLayer.y and i ~= 1 then
         player.currentLayerIndex = i - 1
+        currLayer = layers[i-1]
+        camera:animate(-currLayer.h)
       else
         player.currentLayerIndex = i + 1
+        currLayer = layers[i+1]
+        camera:animate(currLayer.h)
       end
       print("changed current layer to "..player.currentLayerIndex)
     end

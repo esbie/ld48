@@ -1,3 +1,4 @@
+require("camera")
 require("player")
 require("map")
 require("prisons")
@@ -15,14 +16,15 @@ function love.load()
   world = love.physics.newWorld(0, gravity*pixelPerMeter, true)
   world:setCallbacks(beginContact)
 
-  for i=1, 5 do
+  layers:new(levelWidth)
+  while layers[#layers].y < levelWidth do
     layers:new(levelWidth)
   end
 
   player.load(levelWidth)
 
-  love.graphics.setBackgroundColor(30, 10, 5) --set the background color to a nice blue
-  love.window.setMode(levelWidth, levelWidth) --set the window dimensions to 650 by 650
+  love.graphics.setBackgroundColor(30, 10, 5)
+  love.window.setMode(levelWidth, levelWidth)
 end
 
 function beginContact(a, b, coll)
@@ -30,8 +32,9 @@ function beginContact(a, b, coll)
 end
 
 function love.update(dt)
-  world:update(dt) --this puts the world into motion
+  world:update(dt)
   player.update(dt)
+  camera:update(dt)
 end
 
 function love.keypressed(key)
@@ -52,8 +55,10 @@ function love.mousereleased(x, y, button)
 end
 
 function love.draw()
+  camera:set()
   layers:draw()
   player.draw()
+  camera:unset()
 end
 
 function fillPhysicsRectangle(object)

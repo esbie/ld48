@@ -120,8 +120,6 @@ function layers:drawLayer(layer)
   for i, shape in ipairs(layer.shapes) do
     love.graphics.setColor(layer.r, layer.g, layer.b)
     love.graphics.polygon("fill", layer.body:getWorldPoints(shape:getPoints()))
-    love.graphics.setColor(10, 10, 10)
-    love.graphics.polygon("line", layer.body:getWorldPoints(shape:getPoints()))
   end
 
   local toRemove = {}
