@@ -13,9 +13,11 @@ function love.load()
   love.physics.setMeter(pixelPerMeter)
   world = love.physics.newWorld(0, gravity*pixelPerMeter, true)
   world:setCallbacks(beginContact)
-  ground = layers:new(levelWidth)
-  otherGround = layers:new(levelWidth, layers.types.thinAndImpassible)
-  lastGround = layers:new(levelWidth, layers.types.wormTown)
+
+
+  for i=1, 5 do
+    layers:new(levelWidth)
+  end
 
   player.load(levelWidth)
 
