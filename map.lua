@@ -135,16 +135,15 @@ local createShape = function(col, row, colOffset, rowOffset)
     0)
 end
 
-function map.generateShapes(tiles)
-  local result = {}
+function map.generateShapes(tiles, result, integerOffset)
   local totalCols = tiles.totalCols
   local totalRows = tiles.totalRows
+  integerOffset = integerOffset or 0
+  result = result or {}
   for col=1, totalCols do
     for row=1, totalRows do
       if tiles[col][row] == true then
-        result[#result+1] = createShape(col, row)
-        result[#result+1] = createShape(col, row, totalCols*map.tileSize)
-        result[#result+1] = createShape(col, row, -totalCols*map.tileSize)
+        result[#result+1] = createShape(col, row, integerOffset*totalCols*map.tileSize)
       end
     end
   end
@@ -164,4 +163,10 @@ function map.generateItems(layer, tiles, percentage)
     end
   end
   return result
+end
+
+function map.generateAdditionalItems(tiles, result, integerOffset)
+  for i, item in ipairs(result) do
+    items:addShapeAtOffset(item, integerOffset*tiles.totalCols*map.tileSize)
+  end
 end

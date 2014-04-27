@@ -42,7 +42,7 @@ local addColor = function(newLayer)
 end
 
 function layers:new(type)
-  local w = levelWidth
+  local w = levelWidth*2
   type = type or layers.types[math.random(1,3)]
   local h = map.tileSize
   if type.thickness == "medium" then
@@ -76,7 +76,11 @@ function layers:new(type)
   -- end
 
   newLayer.shapes = map.generateShapes(newLayer.tiles)
+  newLayer.shapes = map.generateShapes(newLayer.tiles, newLayer.shapes, 1)
+  newLayer.shapes = map.generateShapes(newLayer.tiles, newLayer.shapes, -1)
   newLayer.items = map.generateItems(newLayer, newLayer.tiles, type.itemDensity)
+  map.generateAdditionalItems(newLayer.tiles, newLayer.items, 1)
+  map.generateAdditionalItems(newLayer.tiles, newLayer.items, -1)
 
   local fixtures = {}
 
@@ -142,10 +146,10 @@ function layers:drawLayer(layer)
 
   local toRemove = {}
   for i, item in ipairs(layer.items) do
-    if item.fixture:getUserData() == "removed" then
+    if item.body:getUserData() == "removed" then
       table.insert(toRemove, i)
-      item.fixture:setUserData("destroyed")
-    elseif item.fixture:getUserData() == "destroyed" then
+      item.body:setUserData("destroyed")
+    elseif item.body:getUserData() == "destroyed" then
       break;
     else
       items:draw(item)
@@ -153,7 +157,7 @@ function layers:drawLayer(layer)
   end
 
   for i, item in ipairs(toRemove) do
-    layer.items[item].fixture:destroy()
+    layer.items[item].body:destroy()
     table.remove(layer.items, item)
   end  
 

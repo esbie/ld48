@@ -1,8 +1,8 @@
 require("camera")
 require("player")
+require("items")
 require("map")
 require("prisons")
-require("items")
 require("layers")
 
 function love.load()
