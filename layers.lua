@@ -5,19 +5,22 @@ layers.types = {
     thickness = 1,
     density = 1.0,
     paths = 1,
-    rooms = 0
+    rooms = 0,
+    itemDensity = 0.1
   },
   {
     thickness = "medium",
     density = 0.8,
     paths = 2,
-    rooms = 1
+    rooms = 1,
+    itemDensity = 0.07
   },
   {
     thickness = "large",
     density = 0.8,
     paths = 10,
-    rooms = 0
+    rooms = 0,
+    itemDensity = 0.01
   }
 }
 
@@ -69,7 +72,7 @@ function layers:new(w, type)
   end
 
   newLayer.shapes = map.generateShapes(newLayer.tiles)
-  newLayer.items = map.generateItems(newLayer, newLayer.tiles)
+  newLayer.items = map.generateItems(newLayer, newLayer.tiles, type.itemDensity)
 
   local fixtures = {}
 
