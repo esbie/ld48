@@ -31,7 +31,7 @@ local addColor = function(newLayer)
     newLayer.g = math.random(60,80)
     newLayer.b = math.random(10,25)
   elseif color == 2 then
-    newLayer.r = math.random(220,150)
+    newLayer.r = math.random(150,220)
     newLayer.g = math.random(40,60)
     newLayer.b = math.random(0,15)
   else
