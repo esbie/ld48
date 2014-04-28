@@ -3,6 +3,7 @@ LD48
 
 ###My submission for Ludum Dare 48
 
+![screenshot](https://raw.githubusercontent.com/esbie/ld48/master/screenshot.png "screenshot")
 
 ####How to install
 * [download love from their website](https://love2d.org/)
