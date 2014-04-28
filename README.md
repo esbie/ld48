@@ -1,8 +1,8 @@
 LD48 
 ====
 
-My submission for Ludum Dare 48
---------
+###My submission for Ludum Dare 48
+
 
 ####How to install
 * [download love from their website](https://love2d.org/)
